@@ -8,10 +8,10 @@ const connectMongo = async () => {
       useNewURLParser: true,
     });
 
-    console.log("Complain will be Uploaded");
+    console.log("Database Connected");
   } catch {
     (err) => {
-      console.log(err.message);
+      console.log(err);
       process.exit(1);
     };
   }

@@ -1,46 +1,37 @@
 const express = require("express");
-const { check, validationResult } = require("express-validator");
+// const { check, validationResult } = require("express-validator");
 const middle = require("../middleware/middle");
 const Course = require("../Model/Course");
 const User = require("../Model/Users");
 
 const router = express.Router();
 
-// ADDING COURSES
-router.post(
-  "/",
-  middle,
-  [check("name", "Course Name cannot be empty").not().isEmpty()],
-  async (req, res) => {
-    const { id } = req.user.id;
-    const errors = validationResult(req);
+// CREATING COURSES
+router.post("/", middle, async (req, res) => {
+  const { id } = req.user.id;
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+  const { name, student, messages, materials } = req.body;
 
-    const { name, student, messages, materials } = req.body;
+  try {
+    let user = User.findById(id);
 
-    try {
-      let user = User.findById(id);
-      let course = new Course({
-        name,
-        student,
-        messages,
-        materials,
-        courseOwner: id,
-        teacher: user.userName,
-      });
+    let course = new Course({
+      name,
+      student,
+      messages,
+      materials,
+      teacher: id,
+      level: 100,
+    });
 
-      const savedCourse = await course.save();
+    const savedCourse = await course.save();
 
-      res.json({ savedCourse });
-    } catch (error) {
-      console.error(error.message);
-      res.status(500).send("Server Error");
-    }
+    res.json({ savedCourse });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
   }
-);
+});
 
 // GETTING COURSES
 router.get("/", middle, async (req, res) => {

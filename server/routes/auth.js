@@ -1,30 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
 const User = require("../Model/Users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const config = require("config");
+require("dotenv").config();
 const middle = require("../middleware/middle");
 
 router.post(
   "/",
-  [
-    check("email", "Enter a valid Email").isEmail(),
-    check("password", "Password must be between 6 and 8 characters")
-      .not()
-      .isLength({
-        min: 6,
-        max: 8,
-      }),
-  ],
+
   async (req, res) => {
     // res.send("LOGGING IN");
-    const errors = validationResult(req.body);
-
-    if (!errors.isEmpty())
-      return res.status("400").json({ error: errors.array() });
-
     const { email, password } = req.body;
 
     try {
@@ -36,7 +22,7 @@ router.post(
 
       if (!compPass) return res.status(400).json({ msg: "Invalid Password" });
 
-      const token = jwt.sign({ id: user.id }, config.get("secret"), {
+      const token = jwt.sign({ id: user.id }, process.env.secret, {
         expiresIn: "1d",
       });
 
