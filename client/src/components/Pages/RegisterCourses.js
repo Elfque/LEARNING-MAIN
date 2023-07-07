@@ -48,7 +48,6 @@ const RegisterCourse = () => {
         "http://localhost:3200/api/courses/register",
         { course: selected }
       );
-      console.log(res.data);
     } catch (error) {
       console.log(error.response);
     }

@@ -68,9 +68,29 @@ router.patch("/register", middle, async (req, res) => {
   try {
     let user = await Student.findById(id);
 
-    // user = { ...user, courses: [...user.courses, ...course] };
-
     const newCourse = [...user.courses, ...course];
+
+    const courses = course.map((cou) => Course.findById(cou._id));
+
+    const addTo = await Promise.all(courses);
+
+    const newCourses = addTo.map(async (add) => {
+      const newStudents = [
+        ...add.students,
+        {
+          name: user.name,
+          id: id,
+          grade: {
+            CA: 0,
+            Examination: 0,
+          },
+        },
+      ];
+
+      add.students = newStudents;
+
+      await add.save();
+    });
 
     user.courses = newCourse;
 
@@ -78,7 +98,6 @@ router.patch("/register", middle, async (req, res) => {
     res.send(user);
   } catch (error) {
     console.log(error.message);
-    // ("Server Error");
   }
 });
 
