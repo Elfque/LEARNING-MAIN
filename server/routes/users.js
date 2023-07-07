@@ -7,6 +7,7 @@ const path = require("path");
 const router = express.Router();
 // const { check, validationResult } = require("express-validator");
 const User = require("../Model/Users");
+const Student = require("../Model/Student");
 
 // FILE STORAGE
 // const storage = multer.diskStorage({
@@ -27,19 +28,19 @@ const User = require("../Model/Users");
 
 // REGISTER USER
 router.post("/", async (req, res) => {
-  const { email, password, userName, accountType } = req.body;
+  const { email, password, name, currentLevel } = req.body;
 
   try {
-    let user = await User.findOne({ email });
+    let user = await Student.findOne({ email });
     if (user) {
       return res.status(400).json({ msg: "User already exists" });
     }
 
-    user = new User({
+    user = new Student({
       email,
       password,
-      userName,
-      accountType,
+      name,
+      currentLevel,
     });
 
     const salt = await bcrypt.genSalt(10);

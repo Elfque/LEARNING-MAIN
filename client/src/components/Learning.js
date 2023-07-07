@@ -7,6 +7,7 @@ import CourseState from "../Context/courseContext/CourseState";
 import Courses from "./Pages/Courses";
 import Course from "./Pages/Course";
 import AuthState from "../Context/authContext/AuthState";
+import RegisterCourse from "./Pages/RegisterCourses";
 
 const Learning = () => {
   return (
@@ -21,6 +22,7 @@ const Learning = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/course/:id" element={<Course />} />
+                <Route path="/courses/register" element={<RegisterCourse />} />
               </Routes>
             </div>
           </Router>

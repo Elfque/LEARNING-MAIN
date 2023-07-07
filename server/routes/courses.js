@@ -2,7 +2,7 @@ const express = require("express");
 // const { check, validationResult } = require("express-validator");
 const middle = require("../middleware/middle");
 const Course = require("../Model/Course");
-const User = require("../Model/Users");
+const Student = require("../Model/Student");
 
 const router = express.Router();
 
@@ -48,6 +48,37 @@ router.get("/", middle, async (req, res) => {
   } catch (error) {
     console.error(err.message);
     res.status(500).json({ msg: "Server Error" });
+  }
+});
+
+router.get("/:level", middle, async (req, res) => {
+  const { level } = req.params;
+
+  try {
+    const courses = await Course.find({ level: level });
+
+    res.send(courses);
+  } catch (error) {}
+});
+
+router.patch("/register", middle, async (req, res) => {
+  const { id } = req.user;
+  const { course } = req.body;
+
+  try {
+    let user = await Student.findById(id);
+
+    // user = { ...user, courses: [...user.courses, ...course] };
+
+    const newCourse = [...user.courses, ...course];
+
+    user.courses = newCourse;
+
+    await user.save();
+    res.send(user);
+  } catch (error) {
+    console.log(error.message);
+    // ("Server Error");
   }
 });
 

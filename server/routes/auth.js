@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../Model/Users");
+const Student = require("../Model/Student");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -14,20 +14,21 @@ router.post(
     const { email, password } = req.body;
 
     try {
-      let user = await User.findOne({ email });
+      let student = await Student.findOne({ email });
 
-      if (!user) return res.status(400).json({ msg: "Invalid Email Address" });
+      if (!student)
+        return res.status(400).json({ msg: "Invalid Email Address" });
 
-      const compPass = await bcrypt.compare(password, user.password);
+      const compPass = await bcrypt.compare(password, student.password);
 
       if (!compPass) return res.status(400).json({ msg: "Invalid Password" });
 
-      const token = jwt.sign({ id: user.id }, process.env.secret, {
+      const token = jwt.sign({ id: student.id }, process.env.secret, {
         expiresIn: "1d",
       });
 
-      delete user.password;
-      res.status(200).json({ msg: "Success", token, user });
+      delete student.password;
+      res.status(200).json({ msg: "Success", token, student });
     } catch (error) {
       console.log(error.message);
       res.send("Server Error");
@@ -39,7 +40,7 @@ router.post(
 router.get("/", middle, async (req, res) => {
   try {
     const { id } = req.user;
-    let user = await User.findById(id);
+    let user = await Student.findById(id);
 
     user.password = "";
     // const {accou ntTy}
