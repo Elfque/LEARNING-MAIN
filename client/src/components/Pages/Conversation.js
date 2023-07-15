@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import Navbar from "../layout/Navbar";
 import AuthContext from "../../Context/authContext/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { BiSend } from "react-icons/bi";
 import { BsPersonCircle } from "react-icons/bs";
 import axios from "axios";
@@ -82,12 +82,16 @@ const Conversation = () => {
           <div className="text-xl">Chats</div>
 
           {user?.conversations?.map((convo, idx) => (
-            <div className="card" key={idx}>
-              <div className="name">{convo.email}</div>
-              <div className="name">
-                {convo.first_name} {convo.last_name}
+            <Link to={`/chat/${convo.id}`} key={idx}>
+              <div className="card flex justify-between items-center p-2 hover:bg-gray-100">
+                <div className="name capitalize">{convo.name}</div>
+                <div
+                  className={`resp w-2 h-2 rounded-full ${
+                    !convo.responded ? "bg-red-500" : "bg-gray-700"
+                  }`}
+                ></div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <div className="messages grid grid-rows-message">

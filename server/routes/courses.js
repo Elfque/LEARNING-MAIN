@@ -57,8 +57,8 @@ router.get("/:level", middle, async (req, res) => {
   try {
     let courses = await Course.find({ level: level });
 
-    courses = courses.map(({ title, code, type, _id }) => {
-      return { title, code, type, _id };
+    courses = courses.map(({ title, code, type, _id, lecturer }) => {
+      return { title, code, type, _id, lecturer };
     });
 
     res.send(courses);
@@ -73,10 +73,6 @@ router.patch("/register", middle, async (req, res) => {
   try {
     let user = await Student.findById(id);
 
-    const newCo = course.map(({ name, _id, lecturer }) => {
-      return { name, _id, lecturer };
-    });
-
     const userCourses = user.courses.find(
       (course) => course.level === user.currentLevel
     );
@@ -86,7 +82,7 @@ router.patch("/register", middle, async (req, res) => {
 
     const newCourse = [
       ...user.courses,
-      { registered: true, courses: newCo, level: user.currentLeve },
+      { registered: true, courses: course, level: user.currentLevel },
     ];
 
     const courses = course.map((cou) => Course.findById(cou._id));
@@ -162,6 +158,25 @@ router.get("/course/:courseId", middle, async (req, res) => {
 
   try {
     const course = await Course.findById(courseId);
+
+    res.send(course);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.post("/message", middle, async (req, res) => {
+  const { courseId, text } = req.body;
+  const { id } = req.user;
+
+  try {
+    const course = await Course.findById(courseId);
+
+    course.messages = [
+      ...course.messages,
+      { text, time: new Date(), sender: id },
+    ];
 
     res.send(course);
   } catch (error) {

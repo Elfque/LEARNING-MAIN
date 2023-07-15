@@ -33,12 +33,14 @@ const Courses = () => {
     if (!user) loadUser();
     if (error && error === "Authorization Failed") navigate("/signin");
 
-    user &&
+    if (user) {
+      console.log(user);
       setCourses(
-        user.courses.find((course) => course.level === user.currentLevel)
+        user?.courses?.find((course) => course.level === user.currentLevel)
           .courses
       );
-  }, []);
+    }
+  }, [user]);
 
   return (
     <div className="grid grid-cols-template">

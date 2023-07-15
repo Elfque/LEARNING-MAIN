@@ -49,7 +49,7 @@ const Navbar = ({ opener }) => {
           </Link>
 
           <Link
-            to={"/conversations"}
+            to={"/chats"}
             className="hover:bg-blue-700 p-2 flex gap-4 items-center"
           >
             <BiSolidMessage /> Conversations
