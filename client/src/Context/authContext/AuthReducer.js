@@ -8,6 +8,7 @@ export default (state, action) => {
         ...state,
         isAuthenticated: true,
         token: localStorage.getItem("token"),
+        error: null,
       };
       break;
     case AUTH_FAILED:
@@ -24,6 +25,7 @@ export default (state, action) => {
         isAuthenticated: true,
         loading: false,
         user: action.payload.user,
+        error: null,
       };
       break;
     case LOGOUT:

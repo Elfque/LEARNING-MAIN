@@ -55,12 +55,17 @@ router.get("/:level", middle, async (req, res) => {
   const { level } = req.params;
 
   try {
-    const courses = await Course.find({ level: level });
+    let courses = await Course.find({ level: level });
+
+    courses = courses.map(({ title, code, type, _id }) => {
+      return { title, code, type, _id };
+    });
 
     res.send(courses);
   } catch (error) {}
 });
 
+// REGISTERIG COURSES
 router.patch("/register", middle, async (req, res) => {
   const { id } = req.user;
   const { course } = req.body;
@@ -68,7 +73,21 @@ router.patch("/register", middle, async (req, res) => {
   try {
     let user = await Student.findById(id);
 
-    const newCourse = [...user.courses, ...course];
+    const newCo = course.map(({ name, _id, lecturer }) => {
+      return { name, _id, lecturer };
+    });
+
+    const userCourses = user.courses.find(
+      (course) => course.level === user.currentLevel
+    );
+
+    if (userCourses && userCourses.registered)
+      return res.status(400).json({ msg: "You Already Registered" });
+
+    const newCourse = [
+      ...user.courses,
+      { registered: true, courses: newCo, level: user.currentLeve },
+    ];
 
     const courses = course.map((cou) => Course.findById(cou._id));
 
@@ -78,7 +97,7 @@ router.patch("/register", middle, async (req, res) => {
       const newStudents = [
         ...add.students,
         {
-          name: user.name,
+          name: `${user.first_name} ${user.last_name}`,
           id: id,
           grade: {
             CA: 0,
@@ -96,6 +115,18 @@ router.patch("/register", middle, async (req, res) => {
 
     await user.save();
     res.send(user);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+router.get("/registered", middle, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    let user = await Student.findById(id);
+
+    res.send(user.courses);
   } catch (error) {
     console.log(error.message);
   }
@@ -119,6 +150,20 @@ router.patch("/:courseId", middle, async (req, res) => {
 
     await user.save();
     await course.save();
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// ADD AND REMOVE STUDENT
+router.get("/course/:courseId", middle, async (req, res) => {
+  const { courseId } = req.params;
+
+  try {
+    const course = await Course.findById(courseId);
+
+    res.send(course);
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");

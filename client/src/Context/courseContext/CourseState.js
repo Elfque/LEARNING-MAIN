@@ -111,7 +111,11 @@ const CourseState = (prop) => {
 
   const getCourses = () => {
     try {
-      const res = axios.get("http://localhost:3200/api/courses");
+      const res = axios.get("http://localhost:3200/api/courses", {
+        headers: {
+          authorize: localStorage.getItem("token"),
+        },
+      });
 
       dispatch({ type: GET_COURSES, payload: res.data });
     } catch (error) {
@@ -119,11 +123,16 @@ const CourseState = (prop) => {
     }
   };
 
-  const getCourse = (id) => {
+  const getCourse = async (id) => {
     try {
-      const res = axios.get(`http://localhost:3200/api/courses/${id}`);
+      const res = await axios.get(`http://localhost:3200/api/courses/${id}`, {
+        headers: {
+          authorize: localStorage.getItem("token"),
+        },
+      });
 
-      // dispatch({ type: GET_COURSES, payload: res.data });
+      console.log(res.data);
+
       dispatch({ type: GET_COURSE, payload: id });
     } catch (error) {
       console.log(error.response.data.message);

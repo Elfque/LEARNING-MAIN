@@ -9,6 +9,7 @@ const AuthState = (prop) => {
     isAuthenticated: false,
     loading: false,
     user: null,
+    error: null,
   };
 
   const [state, dispatch] = useReducer(AuthReducer, initialState);
@@ -23,7 +24,7 @@ const AuthState = (prop) => {
       });
       dispatch({ type: USER_LOADED, payload: res.data });
     } catch (err) {
-      dispatch({ type: AUTH_FAILED });
+      dispatch({ type: AUTH_FAILED, payload: err.response.data.msg });
     }
   };
 
@@ -42,11 +43,8 @@ const AuthState = (prop) => {
   };
 
   const values = {
-    // token: state.token,
-    accountType: state.accountType,
     user: state.user,
-    isAuthenticated: state.isAuthenticated,
-    loading: state.loading,
+    error: state.error,
     authSuccess,
     authError,
     loadUser,

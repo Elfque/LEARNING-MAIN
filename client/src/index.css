@@ -94,3 +94,7 @@ code {
     transform: rotate(360deg);
   }
 }
+
+.sent-messages {
+  height: calc(100vh - 9rem);
+}

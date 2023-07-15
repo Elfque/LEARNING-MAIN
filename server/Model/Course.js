@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 const UserSchema = mongoose.Schema(
   {
-    name: {
+    code: {
+      type: String,
+      require: true,
+      unique: true,
+    },
+    title: {
       type: String,
       require: true,
     },
@@ -10,7 +15,7 @@ const UserSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
-    teacher: {
+    lecturer: {
       type: String,
       require: true,
     },
@@ -18,16 +23,16 @@ const UserSchema = mongoose.Schema(
       type: Number,
       require: true,
     },
-    materials: {
-      type: Array,
-      default: [],
-    },
     messages: {
       type: Array,
       default: [],
+    },
+    type: {
+      type: String,
+      require: true,
     },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("course", UserSchema);
+module.exports = mongoose.model("courses", UserSchema);

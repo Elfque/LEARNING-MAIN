@@ -17,7 +17,7 @@ export default (state, action) => {
     case GET_COURSE:
       return {
         ...state,
-        course: state.courses.find((cour) => cour.id == action.payload),
+        course: action.payload,
       };
       break;
 

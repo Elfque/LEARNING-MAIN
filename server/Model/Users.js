@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UsersSchema = mongoose.Schema(
+const AdminSchema = mongoose.Schema(
   {
     userName: {
       type: String,
@@ -26,8 +26,12 @@ const UsersSchema = mongoose.Schema(
       type: Array,
       default: [],
     },
+    conversations: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("users", UsersSchema);
+module.exports = mongoose.model("admin", AdminSchema);

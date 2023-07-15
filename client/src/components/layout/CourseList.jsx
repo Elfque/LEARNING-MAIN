@@ -4,7 +4,7 @@ const CourseList = ({ course }) => {
   return (
     <Link to={`course/${course.id}`} className="course">
       <div className="p-4">
-        <div className=" text-2xl font-semibold">{course.name}</div>
+        <div className=" text-2xl font-semibold">{course.title}</div>
         <div className="text-sm mt-4">
           Lecturer : <span>{course.creator}</span>
         </div>

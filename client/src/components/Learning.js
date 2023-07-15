@@ -8,6 +8,8 @@ import Courses from "./Pages/Courses";
 import Course from "./Pages/Course";
 import AuthState from "../Context/authContext/AuthState";
 import RegisterCourse from "./Pages/RegisterCourses";
+import Conversations from "./Pages/Conversations";
+import Conversation from "./Pages/Conversation";
 
 const Learning = () => {
   return (
@@ -23,6 +25,8 @@ const Learning = () => {
                 <Route path="/courses" element={<Courses />} />
                 <Route path="/course/:id" element={<Course />} />
                 <Route path="/courses/register" element={<RegisterCourse />} />
+                <Route path="/chats" element={<Conversations />} />
+                <Route path="/chat/:id" element={<Conversation />} />
               </Routes>
             </div>
           </Router>

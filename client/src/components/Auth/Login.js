@@ -39,10 +39,11 @@ const Login = () => {
         config
       );
 
-      setLoading(false);
-      authSuccess(res);
-      console.log(res);
-      navigate("/");
+      if (res.data) {
+        setLoading(false);
+        authSuccess(res);
+        navigate("/");
+      }
       window.location.reload();
     } catch (error) {
       console.log(error);

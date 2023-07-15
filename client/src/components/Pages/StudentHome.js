@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import CourseContext from "../../Context/courseContext/CourseContext";
 import Navbar from "../layout/Navbar";
 import CourseList from "../layout/CourseList";
-import Overlay from "../layout/Overlay";
 import { FaTimes } from "react-icons/fa";
 
 const StudentHome = () => {
@@ -22,4 +21,3 @@ const StudentHome = () => {
 };
 
 export default StudentHome;
-// grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4
