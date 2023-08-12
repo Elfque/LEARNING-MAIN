@@ -10,14 +10,13 @@ router.post(
   "/",
 
   async (req, res) => {
-    // res.send("LOGGING IN");
-    const { email, password } = req.body;
+    const { matric, password } = req.body;
 
     try {
-      let student = await Student.findOne({ email });
+      let student = await Student.findOne({ matric });
 
       if (!student)
-        return res.status(400).json({ msg: "Invalid Email Address" });
+        return res.status(400).json({ msg: "Invalid Matric Number" });
 
       const compPass = await bcrypt.compare(password, student.password);
 
@@ -28,6 +27,9 @@ router.post(
       });
 
       delete student.password;
+      student.courses = [];
+      student.conversations = [];
+
       res.status(200).json({ msg: "Success", token, student });
     } catch (error) {
       console.log(error.message);
@@ -43,7 +45,7 @@ router.get("/", middle, async (req, res) => {
     let user = await Student.findById(id);
 
     user.password = "";
-    // const {accou ntTy}
+
     res.status(200).json({ user });
   } catch (err) {
     console.error(err.message);

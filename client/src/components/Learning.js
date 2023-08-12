@@ -10,6 +10,7 @@ import AuthState from "../Context/authContext/AuthState";
 import RegisterCourse from "./Pages/RegisterCourses";
 import Conversations from "./Pages/Conversations";
 import Conversation from "./Pages/Conversation";
+import Result from "./Pages/Result";
 
 const Learning = () => {
   return (
@@ -27,6 +28,7 @@ const Learning = () => {
                 <Route path="/courses/register" element={<RegisterCourse />} />
                 <Route path="/chats" element={<Conversations />} />
                 <Route path="/chat/:id" element={<Conversation />} />
+                <Route path="/result" element={<Result />} />
               </Routes>
             </div>
           </Router>

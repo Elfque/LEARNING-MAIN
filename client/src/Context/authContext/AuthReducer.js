@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS, AUTH_FAILED, LOGOUT, USER_LOADED } from "../type";
+import {
+  LOGIN_SUCCESS,
+  AUTH_FAILED,
+  LOGOUT,
+  USER_LOADED,
+  CONVERSATIONS,
+} from "../type";
 
 export default (state, action) => {
   switch (action.type) {
@@ -35,6 +41,12 @@ export default (state, action) => {
         isAuthenticated: false,
         user: null,
         error: action.payload,
+      };
+      break;
+    case CONVERSATIONS:
+      return {
+        ...state,
+        conversations: action.payload,
       };
       break;
 

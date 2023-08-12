@@ -100,15 +100,6 @@ const CourseState = (prop) => {
     }
   };
 
-  //   JOIN COURSE
-  const joinCourse = (courseId) => {
-    try {
-      const res = axios.patch(`http://localhost:3200/api/courses/${courseId}`);
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
-  };
-
   const getCourses = () => {
     try {
       const res = axios.get("http://localhost:3200/api/courses", {
@@ -144,7 +135,6 @@ const CourseState = (prop) => {
     course: state.course,
     deleteCourse,
     editCourse,
-    joinCourse,
     getCourses,
     getCourse,
   };

@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const authCon = useContext(AuthContext);
-  const { user, loadUser } = authCon;
+  const { user, loadUser, error } = authCon;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!localStorage.getItem("token")) navigate("/signin");
 
-    loadUser();
-    // eslint-disable-next-line
-  }, []);
+    !user && loadUser();
+
+    if (error === "Authorization Failed") navigate("/signin");
+  }, [error, user]);
 
   return (
     <>

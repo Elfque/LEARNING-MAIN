@@ -44,17 +44,6 @@ router.post("/", async (req, res) => {
     const savedUser = await user.save();
 
     res.status(201).json({ msg: "Success", savedUser });
-
-    // const myPayload = {
-    //   user: {
-    //     id: user.id,
-    //   },
-    // };
-
-    // token.sign({ id: user.id }, myDb, { expiresIn: 36000 }, (err, token) => {
-    //   if (err) throw err;
-    //   res.json({ token });
-    // });
   } catch (error) {
     console.log(error.message);
     res.send("Server Error");
@@ -135,11 +124,32 @@ router.post("/message", middle, async (req, res) => {
     await user.save();
     await student.save();
 
-    const newConvo = student.conversations.find(
-      (conv) => conv.id === destination
-    );
+    res.send(student.conversations);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
 
-    res.send(newConvo);
+router.get("/conversations", middle, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const student = await Student.findById(id);
+
+    res.send(student.conversations);
+  } catch (error) {
+    console.log(error.message);
+    res.send("Server Error");
+  }
+});
+
+router.get("/result", middle, async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const student = await Student.findById(id);
+
+    res.send(student.courses);
   } catch (error) {
     console.log(error.message);
   }

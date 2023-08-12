@@ -38,15 +38,11 @@ router.get("/", middle, async (req, res) => {
   const { id } = req.user;
 
   try {
-    const user = await User.findById(id);
+    const student = await Student.findById(id);
 
-    const courses = await Promise.all(
-      user.courses.map((id) => Course.findById(id))
-    );
-
-    res.send(courses);
+    res.send(student.courses);
   } catch (error) {
-    console.error(err.message);
+    console.error(error.message);
     res.status(500).json({ msg: "Server Error" });
   }
 });

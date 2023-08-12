@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserSchema = mongoose.Schema(
+const CourseSchema = mongoose.Schema(
   {
     code: {
       type: String,
@@ -9,6 +9,10 @@ const UserSchema = mongoose.Schema(
     },
     title: {
       type: String,
+      require: true,
+    },
+    units: {
+      type: Number,
       require: true,
     },
     students: {
@@ -35,4 +39,4 @@ const UserSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("courses", UserSchema);
+module.exports = mongoose.model("courses", CourseSchema);

@@ -15,7 +15,8 @@ const instance = axios.create({
 });
 
 const Conversation = () => {
-  const { user, loadUser, error } = useContext(AuthContext);
+  const { user, loadUser, error, conversations, getConversations } =
+    useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -32,21 +33,11 @@ const Conversation = () => {
         destination: id,
         text: message,
       });
-      setCurrConv(res.data);
+
+      const current = res.data.find((conv) => conv.id === id);
+      setCurrConv(current);
     } catch (error) {
       console.log(error.response);
-    }
-  };
-
-  const lastMessageRef = useRef();
-  const notLastMessage = useRef();
-
-  const scrollToLastMessage = () => {
-    if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
     }
   };
 
@@ -60,17 +51,16 @@ const Conversation = () => {
     if (!localStorage.getItem("token")) navigate("/signin");
     if (!user) loadUser();
     if (error && error === "Authorization Failed") navigate("/signin");
-    if (user) {
-      const current = user.conversations.find((conv) => conv.id === id);
-      setCurrConv(current);
-    }
-  }, [user, error]);
 
-  useEffect(() => {
-    // if (currConv) {
-    scrollToLastMessage();
-    // }
-  }, [lastMessageRef]);
+    if (user) {
+      if (!conversations) {
+        getConversations();
+      } else {
+        const current = conversations.find((conv) => conv.id === id);
+        setCurrConv(current);
+      }
+    }
+  }, [user, error, id]);
 
   return (
     <div className="grid grid-cols-template">
@@ -109,11 +99,6 @@ const Conversation = () => {
                     message.sender === user._id && "justify-end"
                   } `}
                   key={idx}
-                  ref={
-                    idx === currConv.length - 1
-                      ? lastMessageRef
-                      : notLastMessage
-                  }
                 >
                   <div
                     className={`single-message rounded-md text-[12px] p-1 w-3/5 ${

@@ -2,9 +2,18 @@ import { useContext, useEffect } from "react";
 import Navbar from "../layout/Navbar";
 import AuthContext from "../../Context/authContext/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+
+const instance = axios.create({
+  baseURL: process.env.REACT_APP_BACK_URL,
+  headers: {
+    authorize: localStorage.getItem("token"),
+  },
+});
 
 const Conversations = () => {
-  const { user, loadUser, error } = useContext(AuthContext);
+  const { user, loadUser, error, conversations, getConversations } =
+    useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -12,6 +21,9 @@ const Conversations = () => {
     if (!localStorage.getItem("token")) navigate("/signin");
     if (!user) loadUser();
     if (error && error === "Authorization Failed") navigate("/signin");
+    if (user) {
+      getConversations();
+    }
   }, [user, error]);
 
   return (
@@ -23,7 +35,7 @@ const Conversations = () => {
         <div className="conversation-list p-2 bg-white">
           <div className="text-xl">Chats</div>
 
-          {user?.conversations?.map((convo, idx) => (
+          {conversations?.map((convo, idx) => (
             <Link to={`/chat/${convo.id}`} key={idx}>
               <div className="card flex justify-between items-center p-2 hover:bg-gray-100">
                 <div className="name capitalize">{convo.name}</div>

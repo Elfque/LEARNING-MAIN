@@ -15,7 +15,7 @@ const Login = () => {
   const { authSuccess, authError, isAuthenticated } = authCon;
 
   const [logDetails, setLogDetails] = useState({
-    email: "",
+    matric: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const Login = () => {
       if (res.data) {
         setLoading(false);
         authSuccess(res);
-        navigate("/");
+        navigate("/courses");
       }
       window.location.reload();
     } catch (error) {
@@ -68,7 +68,7 @@ const Login = () => {
         <div className="form-control mt-6">
           <input
             type="email"
-            name="email"
+            name="matric"
             id="email"
             onChange={changing}
             className="inp"

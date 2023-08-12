@@ -17,10 +17,13 @@ const Register = () => {
 
   const [regDetails, setRegDetails] = useState({
     email: "",
-    userName: "",
+    first_name: "Adex",
+    last_name: "Silva",
     password: "",
     password1: "",
-    accountType: "Student",
+    faculty: "CIS",
+    Department: "Computer Science",
+    currentLevel: 100,
   });
   const [loading, setLoading] = useState(false);
 
@@ -88,11 +91,23 @@ const Register = () => {
         <div className="form-control mt-4">
           <input
             type="text"
-            name="userName"
-            id="userName"
+            name="first_name"
+            id="first_name"
             className="inp"
             onChange={changing}
-            placeholder="Username"
+            placeholder="First Name"
+            required
+          />
+        </div>
+
+        <div className="form-control mt-4">
+          <input
+            type="text"
+            name="last_name"
+            id="last_name"
+            className="inp"
+            onChange={changing}
+            placeholder="Last Name"
             required
           />
         </div>
@@ -120,41 +135,6 @@ const Register = () => {
             required
           />
         </div>
-
-        <div className="type_part flex justify-around mt-4">
-          <div className="control text-center border-2 border-black rounded-md p-2 text-sm">
-            <label htmlFor="Teacher">Teacher</label>
-            <input
-              type="radio"
-              id="Teacher"
-              className="block mx-auto mt-4"
-              checked={accountType === "Teacher"}
-              name="accountType"
-              value="Teacher"
-              onChange={changing}
-            />
-          </div>
-          <div className="control text-center border-2 border-black rounded-md p-2 text-sm">
-            <label htmlFor="Student">Student</label>
-            <input
-              type="radio"
-              id="Student"
-              className="block mx-auto mt-4"
-              checked={accountType === "Student"}
-              name="accountType"
-              value="Student"
-              onChange={changing}
-            />
-          </div>
-        </div>
-
-        {/* <div className="form-control mt-4">
-          <label htmlFor="type">Type (Student or Teacher)</label>
-          <select name="type" id="type" className="inp" onSelect={changing}>
-            <option value="Student">Student</option>
-            <option value="Teacher">Teacher</option>
-          </select>
-        </div> */}
 
         <div className="text-center">
           <button
