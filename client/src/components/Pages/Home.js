@@ -14,13 +14,22 @@ const Home = () => {
 
     !user && loadUser();
 
-    if (error === "Authorization Failed") navigate("/signin");
+    if (error === "Authorization Failed") {
+      localStorage.removeItem("token");
+      window.location.replace("/signin");
+    }
+
+    if (user) {
+      navigate("/courses");
+    }
   }, [error, user]);
 
   return (
     <>
       <div className="">
-        <StudentHome />
+        <div className="w-60">
+          <StudentHome />
+        </div>
       </div>
     </>
   );
