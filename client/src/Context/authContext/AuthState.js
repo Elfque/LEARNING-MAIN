@@ -9,6 +9,7 @@ import {
   USER_LOADED,
   CONVERSATIONS,
 } from "../type";
+import { axiosInstance } from "../../base";
 
 const AuthState = (prop) => {
   const initialState = {
@@ -24,7 +25,7 @@ const AuthState = (prop) => {
   // LOAD USER
   const loadUser = async () => {
     try {
-      const res = await axios.get("http://localhost:3200/api/auth", {
+      const res = await axiosInstance.get(`/api/auth`, {
         headers: {
           authorize: localStorage.getItem("token"),
         },
@@ -42,19 +43,15 @@ const AuthState = (prop) => {
   // LOGIN SUCCESS / TOKEN GENERATED
   const authSuccess = (res) => {
     dispatch({ type: LOGIN_SUCCESS, payload: res.data });
-    loadUser();
   };
 
   const getConversations = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:3200/api/users/conversations",
-        {
-          headers: {
-            authorize: localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axiosInstance.get(`/api/users/conversations`, {
+        headers: {
+          authorize: localStorage.getItem("token"),
+        },
+      });
       dispatch({ type: CONVERSATIONS, payload: res.data });
     } catch (err) {
       dispatch({ type: AUTH_FAILED, payload: err.response.data.msg });

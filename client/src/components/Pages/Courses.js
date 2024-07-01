@@ -4,6 +4,7 @@ import AuthContext from "../../Context/authContext/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import CourseList from "../layout/CourseList";
 import Navbar from "../layout/Navbar";
+import { axiosInstance } from "../../base";
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACK_URL,
@@ -18,7 +19,7 @@ const Courses = () => {
 
   const getUserCourses = async () => {
     try {
-      const res = await instance.get("/api/courses");
+      const res = await axiosInstance.get("/api/courses");
       setCourses(
         res.data.find((cour) => cour.level === user.currentLevel).courses
       );

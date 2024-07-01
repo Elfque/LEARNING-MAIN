@@ -5,6 +5,7 @@ import AuthContext from "../../Context/authContext/AuthContext";
 import AlertContext from "../../Context/alertContext/AlertContext";
 import axios from "axios";
 import Loader from "../layout/Loader";
+import { axiosInstance } from "../../base";
 
 const Register = () => {
   const authCon = useContext(AuthContext);
@@ -22,7 +23,7 @@ const Register = () => {
     password: "",
     password1: "",
     faculty: "CIS",
-    Department: "Computer Science",
+    department: "Computer Science",
     currentLevel: 100,
   });
   const [loading, setLoading] = useState(false);
@@ -33,24 +34,16 @@ const Register = () => {
     setRegDetails({ ...regDetails, [e.target.name]: e.target.value });
 
   const registerUse = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "http://localhost:3200/api/users",
-        regDetails,
-        config
-      );
+      const res = await axiosInstance.post(`/api/users`, regDetails);
 
+      console.log(res.data);
       setLoading(false);
-      navigate("/signin");
+      window.location.replace("/signin");
     } catch (error) {
-      console.log(error.response.data.msg);
+      // console.log(error.response.data.msg);
       authError(error);
       setLoading(false);
     }

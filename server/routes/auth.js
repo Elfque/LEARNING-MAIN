@@ -6,14 +6,16 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const middle = require("../middleware/middle");
 
+const secret = "josh";
+
 router.post(
   "/",
 
   async (req, res) => {
-    const { matric, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-      let student = await Student.findOne({ matric });
+      let student = await Student.findOne({ email });
 
       if (!student)
         return res.status(400).json({ msg: "Invalid Matric Number" });
@@ -22,7 +24,7 @@ router.post(
 
       if (!compPass) return res.status(400).json({ msg: "Invalid Password" });
 
-      const token = jwt.sign({ id: student.id }, process.env.secret, {
+      const token = jwt.sign({ id: student.id }, secret, {
         expiresIn: "1d",
       });
 

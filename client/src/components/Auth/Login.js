@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import AlertContext from "../../Context/alertContext/AlertContext";
 import Loader from "../layout/Loader";
+import { axiosInstance } from "../../base";
 
 const Login = () => {
   const authCon = useContext(AuthContext);
@@ -15,36 +16,25 @@ const Login = () => {
   const { authSuccess, authError, isAuthenticated } = authCon;
 
   const [logDetails, setLogDetails] = useState({
-    matric: "",
+    email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
 
   const logInUser = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-
     try {
-      const res = await axios.post(
-        "http://localhost:3200/api/auth",
-        logDetails,
-        config
-      );
+      const res = await axiosInstance.post(`/api/auth`, logDetails);
 
+      console.log(res.data);
       if (res.data) {
         setLoading(false);
         authSuccess(res);
-        navigate("/courses");
+        // navigate("/courses");
+        window.location.replace("/");
       }
-      window.location.reload();
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -68,7 +58,7 @@ const Login = () => {
         <div className="form-control mt-6">
           <input
             type="email"
-            name="matric"
+            name="email"
             id="email"
             onChange={changing}
             className="inp"

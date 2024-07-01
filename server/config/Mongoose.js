@@ -1,10 +1,13 @@
 const mongoose = require("mongoose");
-const config = require("config");
-const mongo = config.get("mongoUrl");
+require("config");
+// const mongo = config.get("mongoUrl");
+
+const url = "mongodb+srv://faruqadeyemi70:khalif@cluster0.rg5ggxp.mongodb.net/";
 
 const connectMongo = async () => {
+  console.log("Connecting", process.env.secret);
   try {
-    await mongoose.connect(mongo, {
+    await mongoose.connect(url, {
       useNewURLParser: true,
     });
 

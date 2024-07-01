@@ -4,7 +4,7 @@ import Navbar from "../layout/Navbar";
 import Message from "../layout/Message";
 import StudentMessaages from "../layout/StudentMessages";
 import AuthContext from "../../Context/authContext/AuthContext";
-import axios from "axios";
+import { axiosInstance } from "../../base";
 
 const Course = () => {
   const { user, loadUser, error } = useContext(AuthContext);
@@ -14,16 +14,12 @@ const Course = () => {
   const navigate = useNavigate();
 
   const getCourseById = async () => {
-    console.log("calling");
     try {
-      const res = await axios.get(
-        `http://localhost:3200/api/courses/course/${id}`,
-        {
-          headers: {
-            authorize: localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axiosInstance.get(`/api/courses/course/${id}`, {
+        headers: {
+          authorize: localStorage.getItem("token"),
+        },
+      });
       setCourse(res.data);
     } catch (error) {
       console.log(error.response);
@@ -49,15 +45,15 @@ const Course = () => {
         {course ? (
           <div className="mb-3 p-2">
             <div className="course_top">
-              <div className="name text-3xl font-reos font-bold">
-                {course.code}
+              <div className="name text-3xl font-bold">
+                Course Code :<span className="font-reos">{course.code}</span>
               </div>
-              <div className="name text-xl">{course.title}</div>
-              <div className="name text-xl">{course.lecturer}</div>
+              <div className="name text-xl">Course Title :{course.title}</div>
+              <div className="name text-xl">Lecturer :{course.lecturer}</div>
             </div>
             <div className="main_course grid grid-cols-2">
-              <Message />
-              <StudentMessaages />
+              {/* <Message /> */}
+              {/* <StudentMessaages /> */}
             </div>
           </div>
         ) : (

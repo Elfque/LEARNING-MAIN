@@ -5,6 +5,7 @@ import AuthContext from "../../Context/authContext/AuthContext";
 import AlertContext from "../../Context/alertContext/AlertContext";
 import { useNavigate } from "react-router-dom";
 import Alert from "../layout/Alert";
+import { axiosInstance } from "../../base";
 
 const instance = axios.create({
   headers: {
@@ -25,14 +26,11 @@ const RegisterCourse = () => {
 
   const getCourses = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:3200/api/courses/${user.currentLevel}`,
-        {
-          headers: {
-            authorize: localStorage.getItem("token"),
-          },
-        }
-      );
+      const res = await axiosInstance.get(`/api/courses/${user.currentLevel}`, {
+        headers: {
+          authorize: localStorage.getItem("token"),
+        },
+      });
       setCourses(res.data);
     } catch (error) {
       if (error.response.data.msg === "Authorization Failed")
@@ -54,11 +52,11 @@ const RegisterCourse = () => {
   const registerCourse = async () => {
     setRegistering(true);
     try {
-      const res = await instance.patch(
-        "http://localhost:3200/api/courses/register",
-        { course: selected }
-      );
-      addAlert("Courses Successfully registered", "good");
+      const res = await axiosInstance.patch("/api/courses/register", {
+        course: selected,
+      });
+      // addAlert("Courses Successfully registered", "good");
+      navigate("/courses");
 
       setRegistering(false);
     } catch (error) {

@@ -4,6 +4,7 @@ import CourseReducer from "./CourseReducer";
 // import { v4 } from "uuid";
 import axios from "axios";
 import { DELETE_COURSE, EDIT_COURSE, GET_COURSES, GET_COURSE } from "../type";
+import { axiosInstance } from "../../base";
 
 const CourseState = (prop) => {
   const myName = "John Doe";
@@ -71,28 +72,19 @@ const CourseState = (prop) => {
     course: {},
   };
 
+  const BASEURL = process.env.REACT_APP_BASE_URL;
+
   const [state, dispatch] = useReducer(CourseReducer, initialState);
 
   // DELETE COURSE
   const deleteCourse = async (id) => {
-    const res = axios.delete(`http://localhost:3200/api/courses/${id}`);
+    const res = axios.delete(`${BASEURL}/api/courses/${id}`);
   };
 
   // UPDATE COURSE
   const editCourse = (id, newCourse) => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        authorize: localStorage.getItem("token"),
-      },
-    };
-
     try {
-      const res = axios.put(
-        `http://localhost/3200/api/courses/${id}`,
-        newCourse,
-        config
-      );
+      const res = axiosInstance.put(`/api/courses/${id}`, newCourse);
 
       dispatch({ type: EDIT_COURSE, payload: res.data });
     } catch (error) {
@@ -102,11 +94,7 @@ const CourseState = (prop) => {
 
   const getCourses = () => {
     try {
-      const res = axios.get("http://localhost:3200/api/courses", {
-        headers: {
-          authorize: localStorage.getItem("token"),
-        },
-      });
+      const res = axiosInstance.get(`/api/courses`, {});
 
       dispatch({ type: GET_COURSES, payload: res.data });
     } catch (error) {
@@ -116,7 +104,7 @@ const CourseState = (prop) => {
 
   const getCourse = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:3200/api/courses/${id}`, {
+      const res = await axiosInstance.get(`/api/courses/${id}`, {
         headers: {
           authorize: localStorage.getItem("token"),
         },
