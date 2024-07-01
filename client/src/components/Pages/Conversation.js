@@ -5,14 +5,7 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 import { BiSend } from "react-icons/bi";
 import { BsPersonCircle } from "react-icons/bs";
 import axios from "axios";
-
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_BACK_URL,
-  headers: {
-    "Content-Type": "application/json",
-    authorize: localStorage.getItem("token"),
-  },
-});
+import { axiosInstance } from "../../base";
 
 const Conversation = () => {
   const { user, loadUser, error, conversations, getConversations } =
@@ -29,7 +22,7 @@ const Conversation = () => {
     e.preventDefault();
 
     try {
-      const res = await instance.post("api/users/message", {
+      const res = await axiosInstance.post("/api/users/message", {
         destination: id,
         text: message,
       });

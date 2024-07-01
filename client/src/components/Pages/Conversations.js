@@ -2,14 +2,6 @@ import { useContext, useEffect } from "react";
 import Navbar from "../layout/Navbar";
 import AuthContext from "../../Context/authContext/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-
-const instance = axios.create({
-  baseURL: process.env.REACT_APP_BACK_URL,
-  headers: {
-    authorize: localStorage.getItem("token"),
-  },
-});
 
 const Conversations = () => {
   const { user, loadUser, error, conversations, getConversations } =

@@ -33,7 +33,7 @@ const Login = () => {
         setLoading(false);
         authSuccess(res);
         // navigate("/courses");
-        window.location.replace("/");
+        window.location.replace("/courses");
       }
     } catch (error) {
       console.log(error);
